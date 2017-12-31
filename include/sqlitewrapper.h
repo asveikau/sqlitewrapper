@@ -8,6 +8,21 @@ namespace sqlite {
 
 class statement;
 
+struct
+error_code_args
+{
+   sqlite3 *db;
+   int rc;
+
+   error_code_args(sqlite3 *db_, int rc_) : db(db_), rc(rc_) {}
+};
+
+void
+error_set_sqlite(error *err, error_code_args args);
+
+void
+error_set_sqlite(error *err, int rc);
+
 class sqlite
 {
    sqlite3 *db;
