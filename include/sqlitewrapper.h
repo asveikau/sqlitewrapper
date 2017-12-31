@@ -26,6 +26,10 @@ error_set_sqlite(error *err, int rc);
 class sqlite
 {
    sqlite3 *db;
+
+   void
+   check_open(error *err);
+
 public:
    sqlite();
    sqlite(const sqlite& other) = delete;
@@ -47,8 +51,11 @@ public:
    }
 
    void
+   close();
+
+   void
    prepare(
-      const char *sqlite,
+      const char *sql,
       statement &stmt,
       error *err
    );
