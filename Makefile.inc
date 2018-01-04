@@ -9,6 +9,17 @@ LIBSQLITEWRAPPER_CXXFLAGS += -I$(LIBSQLITEWRAPPER_ROOT)include
 # Needed for FreeBSD
 CXXFLAGS += -I/usr/local/include
 
+ifdef WINDOWS
+USE_STATIC_SQLITE=y
+endif
+
+ifdef USE_STATIC_SQLITE
+LIBSQLITEWRAPPER_SRC += \
+   $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite/sqlite3.c
+LIBSQLITEWRAPPER_CFLAGS += \
+   -I$(LIBSQLITEWRAPPER_ROOT)third_party/sqlite
+endif
+
 LIBSQLITEWRAPPER_SRC += \
    $(LIBSQLITEWRAPPER_ROOT)src/db.cc \
    $(LIBSQLITEWRAPPER_ROOT)src/stmt.cc \
