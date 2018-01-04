@@ -43,5 +43,5 @@ sqlite::error_set_sqlite(error *err, error_code_args args)
 void
 sqlite::error_set_sqlite(error *err, int rc)
 {
-   error_set_sqlite(err, error_code_args(nullptr, rc));
+   error_set_sqlite(err, error_code_args(rc));
 }

@@ -3,6 +3,7 @@
 
 #include <sqlite3.h>
 #include <common/error.h>
+#include <stdint.h>
 
 namespace sqlite {
 
@@ -14,7 +15,11 @@ error_code_args
    sqlite3 *db;
    int rc;
 
+   error_code_args(int rc_) : db(nullptr), rc(rc_) {}
+
    error_code_args(sqlite3 *db_, int rc_) : db(db_), rc(rc_) {}
+
+   error_code_args(sqlite3_stmt *stmt_, int rc_) : db(sqlite3_db_handle(stmt_)), rc(rc_) {}
 };
 
 void
@@ -65,6 +70,10 @@ class statement
 {
    sqlite3_stmt *stmt;
    friend class sqlite;
+
+   void
+   check_open(error *err);
+
 public:
    statement();
    statement(const statement &other) = delete;
@@ -73,6 +82,24 @@ public:
    void close();
 
    bool step(error *err);
+
+   void
+   bind(int idx, error *err);
+
+   void
+   bind(int idx, const void *buf, size_t len, error *err);
+
+   void
+   bind(int idx, const char *str, error *err);
+
+   void
+   bind(int idx, const char *str, size_t len, error *err);
+
+   void
+   bind(int idx, int64_t i, error *err);
+
+   void
+   bind(int idx, double d, error *err);
 };
 
 } // end namespace
