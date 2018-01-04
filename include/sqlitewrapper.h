@@ -70,6 +70,8 @@ public:
    statement(const statement &other) = delete;
    ~statement();
 
+   void close();
+
    bool step(error *err);
 };
 

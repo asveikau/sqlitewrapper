@@ -17,11 +17,7 @@ sqlite::sqlite::open(const char *filename, int flags, const char *vfs, error *er
 {
    int rc;
 
-   if (db)
-   {
-      sqlite3_close(db);
-      db = nullptr;
-   }
+   close();
 
    rc = sqlite3_open_v2(filename, &db, flags, vfs);
    if (rc)
@@ -61,11 +57,7 @@ sqlite::sqlite::prepare(
    check_open(err);
    ERROR_CHECK(err);
 
-   if (stmt.stmt)
-   {
-      sqlite3_finalize(stmt.stmt);
-      stmt.stmt = nullptr;
-   }
+   stmt.close();
 
    rc = sqlite3_prepare_v2(
       db,

@@ -7,6 +7,15 @@ sqlite::statement::statement()
 
 sqlite::statement::~statement()
 {
+   close();
+}
+
+void
+sqlite::statement::close()
+{
    if (stmt)
+   {
       sqlite3_finalize(stmt);
+      stmt = nullptr;
+   }
 }
