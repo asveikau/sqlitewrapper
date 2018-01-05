@@ -1,7 +1,7 @@
-#include <sqlitewrapper.h>
-
 #include <string.h>
 #include <stdlib.h>
+
+#include "internal.h"
 
 #define SOURCE_SQLITE \
     (error_source)((('s' << 24) | ('q' << 16)  | ('l' << 8) | ('t')))

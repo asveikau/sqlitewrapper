@@ -1,5 +1,6 @@
-#include <sqlitewrapper.h>
 #include <string.h>
+
+#include "internal.h"
 
 sqlite::statement::statement()
    : stmt(nullptr)

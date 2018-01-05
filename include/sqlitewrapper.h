@@ -1,7 +1,13 @@
 #ifndef sqlitewrapper_h_
 #define sqlitewrapper_h_
 
-#include <sqlite3.h>
+// XXX
+// This lets us get away with not pulling in the sqlite3.h header
+// if we don't want it.
+//
+typedef struct sqlite3 sqlite3;
+typedef struct sqlite3_stmt sqlite3_stmt;
+
 #include <common/error.h>
 #include <stdint.h>
 
@@ -10,38 +16,6 @@
 namespace sqlite {
 
 class statement;
-
-struct
-error_code_args
-{
-   sqlite3 *db;
-   int rc;
-
-   error_code_args(int rc_) : db(nullptr), rc(rc_) {}
-
-   error_code_args(sqlite3 *db_) : db(db_), rc(SQLITE_ERROR) {get_db_rc();}
-
-   error_code_args(sqlite3 *db_, int rc_) : db(db_), rc(rc_) {}
-
-   error_code_args(sqlite3_stmt *stmt_, int rc_) : db(sqlite3_db_handle(stmt_)), rc(rc_) {}
-
-   error_code_args(sqlite3_stmt *stmt_) : db(sqlite3_db_handle(stmt_)), rc(SQLITE_ERROR) {get_db_rc();}
-
-private:
-   void
-   get_db_rc()
-   {
-      int rc2;
-      if (db && (rc2 = sqlite3_errcode(db)))
-         rc = rc2;
-   }
-};
-
-void
-error_set_sqlite(error *err, error_code_args args);
-
-void
-error_set_sqlite(error *err, int rc);
 
 class sqlite
 {
@@ -65,10 +39,7 @@ public:
    }
 
    void
-   open(const char *filename, error *err)
-   {
-      open(filename, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, err);
-   }
+   open(const char *filename, error *err);
 
    void
    close();

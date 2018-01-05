@@ -1,6 +1,7 @@
-#include <sqlitewrapper.h>
 #include <common/misc.h>
 #include <string.h>
+
+#include "internal.h"
 
 sqlite::sqlite::sqlite()
   : db(nullptr)
@@ -23,6 +24,12 @@ sqlite::sqlite::open(const char *filename, int flags, const char *vfs, error *er
    if (rc)
       ERROR_SET(err, sqlite, rc);
 exit:;
+}
+
+void
+sqlite::sqlite::open(const char *filename, error *err)
+{
+   open(filename, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, err);
 }
 
 void
