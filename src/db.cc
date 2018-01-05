@@ -23,6 +23,25 @@ sqlite::sqlite::open(const char *filename, int flags, const char *vfs, error *er
    rc = sqlite3_open_v2(filename, &db, flags, vfs);
    if (rc)
       ERROR_SET(err, sqlite, rc);
+
+   if ((flags & SQLITE_OPEN_READWRITE))
+   {
+      static const char * const openingStatements[] =
+      {
+         "PRAGMA journal_mode = WAL",
+         "PRAGMA synchronous = FULL",
+         nullptr
+      };
+      const char * const *p = openingStatements;
+      statement stmt;
+      while (*p)
+      {
+         prepare(*p++, stmt, err);
+         ERROR_CHECK(err);
+         stmt.step(err);
+         ERROR_CHECK(err);
+      }
+   }
 exit:;
 }
 
