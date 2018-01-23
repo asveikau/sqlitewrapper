@@ -93,6 +93,12 @@ public:
    void
    bind(int idx, double d, error *err);
 
+   void
+   bind(int idx, uint64_t u, error *err)
+   {
+      bind(idx, (int64_t)u, err);
+   }
+
    int
    column_count();
 
