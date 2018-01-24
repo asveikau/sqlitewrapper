@@ -52,6 +52,17 @@ public:
       statement &stmt,
       error *err
    );
+
+   // Like prepare, but calling step() once and discarding
+   // results.
+   //
+   void
+   exec(const char *sql, error *err);
+
+   // Same pattern, but NULL terminated for multiple statements.
+   //
+   void
+   exec(const char *const *sql_z, error *err);
 };
 
 class statement

@@ -32,15 +32,8 @@ sqlite::sqlite::open(const char *filename, int flags, const char *vfs, error *er
          "PRAGMA synchronous = FULL",
          nullptr
       };
-      const char * const *p = openingStatements;
-      statement stmt;
-      while (*p)
-      {
-         prepare(*p++, stmt, err);
-         ERROR_CHECK(err);
-         stmt.step(err);
-         ERROR_CHECK(err);
-      }
+      exec(openingStatements, err);
+      ERROR_CHECK(err);
    }
 exit:;
 }
@@ -98,5 +91,34 @@ sqlite::sqlite::prepare(
    if (tail && *tail)
       ERROR_SET(err, unknown, "Unused junk at the end of sql");
 
+exit:;
+}
+
+void
+sqlite::sqlite::exec(const char *sql, error *err)
+{
+   statement stmt;
+
+   prepare(sql, stmt, err);
+   ERROR_CHECK(err);
+
+   stmt.step(err);
+   ERROR_CHECK(err);
+exit:;
+}
+
+void
+sqlite::sqlite::exec(const char * const *p, error *err)
+{
+   statement stmt;
+
+   while (p)
+   {
+      prepare(*p++, stmt, err);
+      ERROR_CHECK(err);
+
+      stmt.step(err);
+      ERROR_CHECK(err);
+   }
 exit:;
 }
