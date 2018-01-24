@@ -89,6 +89,7 @@ public:
    void close();
 
    bool step(error *err);
+   void reset(error *err);
 
    int
    bind_count();

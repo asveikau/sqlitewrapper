@@ -69,6 +69,20 @@ exit:
    return r;
 }
 
+void
+sqlite::statement::reset(error *err)
+{
+   int rc = 0;
+
+   check_open(err);
+   ERROR_CHECK(err);
+
+   rc = sqlite3_reset(stmt);
+   if (rc)
+      ERROR_SET(err, sqlite, error_code_args(stmt, rc));
+exit:;
+}
+
 int
 sqlite::statement::bind_count()
 {
