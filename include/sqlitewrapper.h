@@ -15,6 +15,9 @@ typedef struct sqlite3_stmt sqlite3_stmt;
 #include <string>
 #include <vector>
 
+#define SOURCE_SQLITE \
+    (error_source)((('s' << 24) | ('q' << 16)  | ('l' << 8) | ('t')))
+
 namespace sqlite {
 
 class statement;

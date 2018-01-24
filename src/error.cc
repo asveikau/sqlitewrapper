@@ -3,9 +3,6 @@
 
 #include "internal.h"
 
-#define SOURCE_SQLITE \
-    (error_source)((('s' << 24) | ('q' << 16)  | ('l' << 8) | ('t')))
-
 void
 sqlite::error_set_sqlite(error *err, error_code_args args)
 {
