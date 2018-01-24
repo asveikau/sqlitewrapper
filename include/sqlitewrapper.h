@@ -63,6 +63,11 @@ public:
    //
    void
    exec(const char *const *sql_z, error *err);
+
+   // Same as above, but varags...
+   //
+   void
+   exec(error *err, const char *sql0, ...);
 };
 
 class statement

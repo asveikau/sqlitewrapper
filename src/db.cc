@@ -122,3 +122,28 @@ sqlite::sqlite::exec(const char * const *p, error *err)
    }
 exit:;
 }
+
+void
+sqlite::sqlite::exec(error *err, const char *sql0, ...)
+{
+   if (!sql0)
+      return;
+
+   statement stmt;
+   va_list ap;
+   const char *sql;
+
+   va_start(ap, sql0);
+
+   for (sql = sql0; sql; sql = va_arg(ap, const char *))
+   {
+      prepare(sql, stmt, err);
+      ERROR_CHECK(err);
+
+      stmt.step(err);
+      ERROR_CHECK(err);
+   }
+
+exit:
+   va_end(ap);
+}
