@@ -10,8 +10,10 @@ typedef struct sqlite3_stmt sqlite3_stmt;
 
 #include <common/error.h>
 #include <stdint.h>
+#include <string.h>
 
 #include <string>
+#include <vector>
 
 namespace sqlite {
 
@@ -123,6 +125,34 @@ public:
    void
    column(int idx, const void *&blob, size_t &len, error *err);
 
+   // Assumes T is a POD type...
+   //
+   template<typename T>
+   void
+   column(int idx, std::vector<T> &blob, error *err)
+   {
+      const void *blobp = nullptr;
+      size_t len = 0;
+
+      column(idx, blobp, len, err);
+      ERROR_CHECK(err);
+
+      len /= sizeof(T);
+
+      try
+      {
+         blob.resize(len);
+      }
+      catch (std::bad_alloc)
+      {
+         ERROR_SET(err, errno, ENOMEM);
+      }
+
+      if (len)
+         memcpy(blob.data(), blobp, len * sizeof(T));
+   exit:;
+   }
+
    void
    column(int idx, uint64_t &i, error *err)
    {
@@ -164,6 +194,15 @@ public:
       std::string s;
       column(idx, s, err);
       return s;
+   }
+
+   template<typename T>
+   std::vector<T>
+   column_blob(int idx, error err)
+   {
+      std::vector<T> blob;
+      column(idx, blob, err);
+      return blob;
    }
 };
 
