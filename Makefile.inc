@@ -17,7 +17,7 @@ endif
 ifdef USE_STATIC_SQLITE
 LIBSQLITEWRAPPER_SRC += \
    $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite/sqlite3.c
-LIBSQLITEWRAPPER_CFLAGS += \
+CFLAGS += \
    -I$(LIBSQLITEWRAPPER_ROOT)third_party/sqlite
 else
 LDFLAGS += -lsqlite3
