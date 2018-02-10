@@ -38,5 +38,8 @@ error_set_sqlite(error *err, error_code_args args);
 void
 error_set_sqlite(error *err, int rc);
 
+void
+init_library(error *err);
+
 } // end namespace
 #endif

@@ -18,6 +18,9 @@ sqlite::sqlite::open(const char *filename, int flags, const char *vfs, error *er
 {
    int rc;
 
+   init_library(err);
+   ERROR_CHECK(err);
+
    close();
 
    rc = sqlite3_open_v2(filename, &db, flags, vfs);
