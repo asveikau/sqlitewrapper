@@ -165,7 +165,7 @@ public:
       }
       catch (std::bad_alloc)
       {
-         ERROR_SET(err, errno, ENOMEM);
+         ERROR_SET(err, nomem);
       }
 
       if (len)

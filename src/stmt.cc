@@ -306,7 +306,7 @@ sqlite::statement::column(int idx, std::string &str, error *err)
    }
    catch (std::bad_alloc)
    {
-      ERROR_SET(err, errno, ENOMEM);
+      ERROR_SET(err, nomem);
    }
 exit:;
 }
