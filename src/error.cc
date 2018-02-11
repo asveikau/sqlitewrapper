@@ -9,6 +9,12 @@ sqlite::error_set_sqlite_impl(error *err, error_code_args args)
    const char *msg = nullptr;
    char *duped = nullptr;
 
+   if (args.rc == SQLITE_NOMEM)
+   {
+      error_set_nomem(err);
+      return;
+   }
+
    if (args.db)
    {
       msg = sqlite3_errmsg(args.db);
