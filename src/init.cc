@@ -20,14 +20,13 @@ sqlite::init_library(error *err)
       {
          int rc;
 
-         sqlite3_config(
-            SQLITE_CONFIG_LOG,
-            (void (*)(void *, int, const char*)) [] (void *context, int err, const char *msg) -> void
+         void (*logfn)(void *, int, const char*) =
+            [] (void *context, int err, const char *msg) -> void
             {
                log_printf("sqlite: %.8x %s", err, msg);               
-            },
-            context
-         );
+            };
+
+         sqlite3_config(SQLITE_CONFIG_LOG, logfn, context);
 
          rc = sqlite3_initialize();
          if (rc)
