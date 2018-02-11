@@ -89,7 +89,7 @@ sqlite::sqlite::prepare(
       &tail
    );
    if (rc)
-      ERROR_SET(err, sqlite, error_code_args(db, rc));
+      ERROR_SET(err, sqlite, db, rc);
 
    if (tail && *tail)
       ERROR_SET(err, unknown, "Unused junk at the end of sql");

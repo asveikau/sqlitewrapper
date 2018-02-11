@@ -4,7 +4,7 @@
 #include "internal.h"
 
 void
-sqlite::error_set_sqlite(error *err, error_code_args args)
+sqlite::error_set_sqlite_impl(error *err, error_code_args args)
 {
    const char *msg = nullptr;
    char *duped = nullptr;
@@ -35,10 +35,4 @@ sqlite::error_set_sqlite(error *err, error_code_args args)
       err->get_string = nullptr;
       err->free_fn = nullptr;
    }
-}
-
-void
-sqlite::error_set_sqlite(error *err, int rc)
-{
-   error_set_sqlite(err, error_code_args(rc));
 }

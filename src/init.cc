@@ -31,7 +31,7 @@ sqlite::init_library(error *err)
 
          rc = sqlite3_initialize();
          if (rc)
-            ERROR_SET(err, sqlite, error_code_args(rc));
+            ERROR_SET(err, sqlite, rc);
 
       exit:;
       },

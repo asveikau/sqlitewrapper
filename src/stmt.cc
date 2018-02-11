@@ -62,7 +62,7 @@ sqlite::statement::step(error *err)
    case SQLITE_DONE:
       break;
    default:
-      ERROR_SET(err, sqlite, error_code_args(stmt, rc));
+      ERROR_SET(err, sqlite, stmt, rc);
    }
 
 exit:
@@ -79,7 +79,7 @@ sqlite::statement::reset(error *err)
 
    rc = sqlite3_reset(stmt);
    if (rc)
-      ERROR_SET(err, sqlite, error_code_args(stmt, rc));
+      ERROR_SET(err, sqlite, stmt, rc);
 exit:;
 }
 
@@ -101,7 +101,7 @@ sqlite::statement::bind(int idx, error *err)
    ERROR_CHECK(err);
 
    if ((rc = sqlite3_bind_null(stmt, idx+1)))
-      ERROR_SET(err, sqlite, error_code_args(stmt, rc));
+      ERROR_SET(err, sqlite, stmt, rc);
 exit:;
 }
 
@@ -120,7 +120,7 @@ sqlite::statement::bind(int idx, const void *buf, size_t len, error *err)
    ERROR_CHECK(err);
 
    if ((rc = sqlite3_bind_blob64(stmt, idx+1, buf, len, nullptr)))
-      ERROR_SET(err, sqlite, error_code_args(stmt, rc));
+      ERROR_SET(err, sqlite, stmt, rc);
 exit:;
 }
 
@@ -152,7 +152,7 @@ sqlite::statement::bind(int idx, const char *str, size_t len, error *err)
    ERROR_CHECK(err);
 
    if ((rc = sqlite3_bind_text(stmt, idx+1, str, len, nullptr)))
-      ERROR_SET(err, sqlite, error_code_args(stmt, rc));
+      ERROR_SET(err, sqlite, stmt, rc);
 exit:;
 }
 
@@ -165,7 +165,7 @@ sqlite::statement::bind(int idx, int64_t i, error *err)
    ERROR_CHECK(err);
 
    if ((rc = sqlite3_bind_int64(stmt, idx+1, i)))
-      ERROR_SET(err, sqlite, error_code_args(stmt, rc));
+      ERROR_SET(err, sqlite, stmt, rc);
 exit:;
 }
 
@@ -178,7 +178,7 @@ sqlite::statement::bind(int idx, double d, error *err)
    ERROR_CHECK(err);
 
    if ((rc = sqlite3_bind_double(stmt, idx+1, d)))
-      ERROR_SET(err, sqlite, error_code_args(stmt, rc));
+      ERROR_SET(err, sqlite, stmt, rc);
 exit:;
 }
 
@@ -200,7 +200,7 @@ sqlite::statement::column_name(int idx, error *err)
 
    r = sqlite3_column_name(stmt, idx);
    if (!r)
-      ERROR_SET(err, sqlite, error_code_args(stmt));
+      ERROR_SET(err, sqlite, stmt);
 
 exit:
    return r;
@@ -263,7 +263,7 @@ sqlite::statement::column(int idx, const char *&string, size_t &len, error *err)
 
    r = sqlite3_column_text(stmt, idx);
    if (!r)
-      ERROR_SET(err, sqlite, error_code_args(stmt));
+      ERROR_SET(err, sqlite, stmt);
    string = (const char*)r;
    n = sqlite3_column_bytes(stmt, idx);
 exit:;
@@ -284,7 +284,7 @@ sqlite::statement::column(int idx, const void *&blob, size_t &len, error *err)
 
    blob = sqlite3_column_blob(stmt, idx);
    if (!blob)
-      ERROR_SET(err, sqlite, error_code_args(stmt));
+      ERROR_SET(err, sqlite, stmt);
    len = sqlite3_column_bytes(stmt, idx);
 
 exit:;
