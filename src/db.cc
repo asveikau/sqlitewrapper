@@ -1,4 +1,5 @@
 #include <common/misc.h>
+#include <common/path.h>
 #include <string.h>
 
 #include "internal.h"
@@ -17,6 +18,7 @@ void
 sqlite::sqlite::open(const char *filename, int flags, const char *vfs, error *err)
 {
    int rc;
+   char *walFile = nullptr;
 
    init_library(err);
    ERROR_CHECK(err);
@@ -25,7 +27,51 @@ sqlite::sqlite::open(const char *filename, int flags, const char *vfs, error *er
 
    rc = sqlite3_open_v2(filename, &db, flags, vfs);
    if (rc)
+   {
+      // Sometimes we fail to open if there was an interrupted write,
+      // and a writeable handle seems to do ok.  Try to hack around
+      // this by re-trying for writing.
+      //
+      if (rc == SQLITE_CANTOPEN &&
+          !(flags & SQLITE_OPEN_READWRITE))
+      {
+         static const char suffix[] = "-wal";
+         size_t len = strlen(filename);
+
+         walFile = (char*)malloc(len + sizeof(suffix));
+         if (walFile)
+         {
+            memcpy(walFile, filename, len);
+            memcpy(walFile + len, suffix, sizeof(suffix));
+
+            #define exit cont
+            if (path_exists(walFile, err))
+            {
+               open(filename, flags | SQLITE_OPEN_READWRITE, vfs, err);
+               ERROR_CHECK(err);
+
+               close();
+
+               int rc2 = sqlite3_open_v2(filename, &db, flags, vfs);
+
+               if (!rc2)
+               {
+                  rc = rc2;
+                  goto skip;
+               }
+            }
+            else
+            {
+               ERROR_CHECK(err);
+            }
+            #undef exit
+         }
+      }
+   cont:
+      error_clear(err);
       ERROR_SET(err, sqlite, rc);
+   skip:;
+   }
 
    if ((flags & SQLITE_OPEN_READWRITE))
    {
@@ -38,7 +84,8 @@ sqlite::sqlite::open(const char *filename, int flags, const char *vfs, error *er
       exec(openingStatements, err);
       ERROR_CHECK(err);
    }
-exit:;
+exit:
+   free(walFile);
 }
 
 void
