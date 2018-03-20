@@ -115,7 +115,7 @@ sqlite::sqlite::exec(const char * const *p, error *err)
 {
    statement stmt;
 
-   while (p)
+   while (*p)
    {
       prepare(*p++, stmt, err);
       ERROR_CHECK(err);
