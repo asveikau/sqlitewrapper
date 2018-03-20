@@ -244,7 +244,6 @@ void
 sqlite::statement::column(int idx, const char *&string, size_t &len, error *err)
 {
    const unsigned char *r = nullptr;
-   int n = 0;
 
    check_column(idx, err);
    ERROR_CHECK(err);
@@ -265,7 +264,7 @@ sqlite::statement::column(int idx, const char *&string, size_t &len, error *err)
    if (!r)
       ERROR_SET(err, sqlite, stmt);
    string = (const char*)r;
-   n = sqlite3_column_bytes(stmt, idx);
+   len = sqlite3_column_bytes(stmt, idx);
 exit:;
 }
 
