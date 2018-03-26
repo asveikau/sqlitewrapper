@@ -1,5 +1,7 @@
 
-LIBCOMMON_ROOT=../common/
+ifndef LIBCOMMON_ROOT
+LIBCOMMON_ROOT=$(LIBSQLITEWRAPPER_ROOT)../common/
+endif
 include $(LIBCOMMON_ROOT)Makefile.inc
 
 LIBSQLITEWRAPPER_CXXFLAGS += -fno-rtti
