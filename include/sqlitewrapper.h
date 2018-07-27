@@ -21,6 +21,7 @@ typedef struct sqlite3_stmt sqlite3_stmt;
 namespace sqlite {
 
 class statement;
+struct error_code_args;
 
 class sqlite
 {
@@ -28,6 +29,11 @@ class sqlite
 
    void
    check_open(error *err);
+
+   void
+   error_set_sqlite_impl(error *err, error_code_args args);
+
+   friend class statement;
 
 public:
    sqlite();
@@ -76,6 +82,7 @@ public:
 class statement
 {
    sqlite3_stmt *stmt;
+   sqlite *db;
    friend class sqlite;
 
    void
@@ -83,6 +90,9 @@ class statement
 
    void
    check_column(int idx, error *err);
+
+   void
+   error_set_sqlite_impl(error *err, error_code_args args);
 
 public:
    statement();

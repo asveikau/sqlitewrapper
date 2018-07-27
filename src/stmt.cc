@@ -3,7 +3,7 @@
 #include "internal.h"
 
 sqlite::statement::statement()
-   : stmt(nullptr)
+   : stmt(nullptr), db(nullptr)
 {
 }
 
@@ -20,6 +20,17 @@ sqlite::statement::close()
       sqlite3_finalize(stmt);
       stmt = nullptr;
    }
+
+   db = nullptr;
+}
+
+void
+sqlite::statement::error_set_sqlite_impl(error *err, error_code_args args)
+{
+   if (db)
+      db->error_set_sqlite_impl(err, args);
+   else
+      ::sqlite::error_set_sqlite_impl(err, args);
 }
 
 void

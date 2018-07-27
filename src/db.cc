@@ -14,6 +14,12 @@ sqlite::sqlite::~sqlite()
    close();
 }
 
+void
+sqlite::sqlite::error_set_sqlite_impl(error *err, error_code_args args)
+{
+   ::sqlite::error_set_sqlite_impl(err, args);
+}
+
 void 
 sqlite::sqlite::open(const char *filename, int flags, const char *vfs, error *err)
 {
