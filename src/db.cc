@@ -147,6 +147,7 @@ sqlite::sqlite::prepare(
    if (tail && *tail)
       ERROR_SET(err, unknown, "Unused junk at the end of sql");
 
+   stmt.db = this;
 exit:;
 }
 
