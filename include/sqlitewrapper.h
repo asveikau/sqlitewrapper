@@ -117,6 +117,12 @@ public:
    bind(int idx, const char *str, error *err);
 
    void
+   bind(int idx, const std::string &str, error *err)
+   {
+      bind(idx, str.c_str(), err);
+   }
+
+   void
    bind(int idx, const char *str, size_t len, error *err);
 
    void
