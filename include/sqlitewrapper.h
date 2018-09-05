@@ -52,6 +52,9 @@ public:
    void
    open(const char *filename, error *err);
 
+   bool
+   is_open(void) const { return db ? true : false; }
+
    void
    close();
 
