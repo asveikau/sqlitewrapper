@@ -204,3 +204,25 @@ sqlite::sqlite::exec(error *err, const char *sql0, ...)
 exit:
    va_end(ap);
 }
+
+bool
+sqlite::sqlite::table_exists(const char *name, error *err)
+{
+   statement stmt;
+   bool r = false;
+
+   check_open(err);
+   ERROR_CHECK(err);
+
+   prepare("SELECT 1 from sqlite_master where type='table' and name = ?", stmt, err);
+   ERROR_CHECK(err);
+
+   stmt.bind(0, name, err);
+   ERROR_CHECK(err);
+
+   r = stmt.step(err);
+   ERROR_CHECK(err);
+
+exit:
+   return r;
+}

@@ -77,6 +77,9 @@ public:
    //
    void
    exec(error *err, const char *sql0, ...);
+
+   bool
+   table_exists(const char *name, error *err);
 };
 
 class statement
