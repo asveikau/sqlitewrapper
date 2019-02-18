@@ -1,3 +1,11 @@
+/*
+ Copyright (C) 2017, 2018 Andrew Sveikauskas
+
+ Permission to use, copy, modify, and distribute this software for any
+ purpose with or without fee is hereby granted, provided that the above
+ copyright notice and this permission notice appear in all copies.
+*/
+
 #ifndef sqlitewrapper_h_
 #define sqlitewrapper_h_
 
