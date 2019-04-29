@@ -44,7 +44,7 @@ void
 error_set_sqlite_impl(error *err, error_code_args args);
 
 #define error_set_sqlite(err, ...) \
-      ::sqlite::error_set_sqlite_impl(err, ::sqlite::error_code_args(__VA_ARGS__))
+      error_set_sqlite_impl(err, ::sqlite::error_code_args(__VA_ARGS__))
 
 void
 init_library(error *err);
