@@ -115,11 +115,20 @@ public:
 
    void close();
 
+   // Returns true if there is column data [i.e. SQLITE_ROW],
+   // false otherwise
+   //
    bool step(error *err);
+
    void reset(error *err);
 
    int
    bind_count();
+
+   //
+   // Note that, in the wrapper, bind() uses 0-based indices,
+   // whereas sqlite3 itself uses 1-based.
+   //
 
    void
    bind(int idx, error *err);
