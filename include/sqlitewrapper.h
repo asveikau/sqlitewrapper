@@ -60,6 +60,9 @@ public:
    void
    open(const char *filename, error *err);
 
+   sqlite3 *
+   get_handle() const { return db; }
+
    bool
    is_open(void) const { return db ? true : false; }
 
@@ -112,6 +115,9 @@ public:
    statement();
    statement(const statement &other) = delete;
    ~statement();
+
+   sqlite3_stmt *
+   get_handle() const { return stmt; }
 
    void close();
 
