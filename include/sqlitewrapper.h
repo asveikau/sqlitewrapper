@@ -94,6 +94,9 @@ public:
 
    bool
    table_exists(const char *name, error *err);
+
+   int64_t
+   last_insert_rowid();
 };
 
 class statement

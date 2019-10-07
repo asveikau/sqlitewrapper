@@ -234,3 +234,9 @@ sqlite::sqlite::table_exists(const char *name, error *err)
 exit:
    return r;
 }
+
+int64_t
+sqlite::sqlite::last_insert_rowid()
+{
+   return sqlite3_last_insert_rowid(db);
+}
