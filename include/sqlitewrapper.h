@@ -174,9 +174,9 @@ public:
    bind_multi(error *err, int idx, T first, Args... rest)
    {
       bind_multi<T>(err, idx, first);
-      if (sizeof...(rest) == 1)
-         bind_multi<Args...>(err, idx + 1, rest...);
-      else if (sizeof...(rest) != 0)
+      if (ERROR_FAILED(err))
+         return;
+      if (sizeof...(rest) != 0)
          bind_multi(err, idx+1, rest...);
    }
 
@@ -298,9 +298,7 @@ public:
       column_multi<T>(err, idx, first);
       if (ERROR_FAILED(err))
          return;
-      if (sizeof...(rest) == 1)
-         column_multi<Args...>(err, idx + 1, rest...);
-      else if (sizeof...(rest) != 0)
+      if (sizeof...(rest) != 0)
          column_multi(err, idx+1, rest...);
    }
 
