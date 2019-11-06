@@ -126,6 +126,12 @@ sqlite::sqlite::check_open(error *err)
 exit:;
 }
 
+bool
+sqlite::sqlite::is_read_only()
+{
+   return (!db) || sqlite3_db_readonly(db, "main");
+}
+
 void
 sqlite::sqlite::prepare(
    const char *sql,

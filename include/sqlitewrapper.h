@@ -66,6 +66,9 @@ public:
    bool
    is_open(void) const { return db ? true : false; }
 
+   bool
+   is_read_only();
+
    void
    close();
 
