@@ -174,7 +174,7 @@ public:
 
    template<typename T, typename... Args>
    void
-   bind_multi(error *err, int idx, T first, Args... rest)
+   bind_multi(error *err, int idx, T first, const Args& ... rest)
    {
       bind_multi<T>(err, idx, first);
       if (ERROR_FAILED(err))
@@ -185,7 +185,7 @@ public:
 
    template<typename T>
    void
-   bind_multi(error *err, int idx, T first)
+   bind_multi(error *err, int idx, const T &first)
    {
       bind(idx, first, err);
    }
@@ -296,7 +296,7 @@ public:
 
    template<typename T, typename... Args>
    void
-   column_multi(error *err, int idx, T& first, Args... rest)
+   column_multi(error *err, int idx, T& first, Args&... rest)
    {
       column_multi<T>(err, idx, first);
       if (ERROR_FAILED(err))
