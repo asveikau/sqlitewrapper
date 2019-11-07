@@ -241,6 +241,41 @@ exit:
    return r;
 }
 
+bool
+sqlite::sqlite::column_exists(const char *table, const char *column, error *err)
+{
+   statement stmt;
+   bool r = false;
+   size_t columnLen = strlen(column);
+   static const char fmt[] = "pragma table_info(%s)";
+   char buf[sizeof(fmt) + strlen(table)];
+
+   check_open(err);
+   ERROR_CHECK(err);
+
+   snprintf(buf, sizeof(buf), fmt, table);
+   prepare(buf, stmt, err);
+   ERROR_CHECK(err);
+
+   while (stmt.step(err))
+   {
+      const char *str = nullptr;
+      size_t len = 0;
+
+      stmt.column(1, str, len, err);
+      ERROR_CHECK(err);
+      if (str && columnLen == len && !strcmp(str, column))
+      {
+         r = true;
+         break;
+      }
+   }
+   ERROR_CHECK(err);
+
+exit:
+   return r;
+}
+
 int64_t
 sqlite::sqlite::last_insert_rowid()
 {

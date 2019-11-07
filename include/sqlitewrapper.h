@@ -98,6 +98,9 @@ public:
    bool
    table_exists(const char *name, error *err);
 
+   bool
+   column_exists(const char *table, const char *column, error *err);
+
    int64_t
    last_insert_rowid();
 };
