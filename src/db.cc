@@ -248,12 +248,17 @@ sqlite::sqlite::column_exists(const char *table, const char *column, error *err)
    bool r = false;
    size_t columnLen = strlen(column);
    static const char fmt[] = "pragma table_info(%s)";
-   char buf[sizeof(fmt) + strlen(table)];
+   size_t bufsz = sizeof(fmt)+strlen(table);
+#if defined(_MSC_VER)
+   char *buf = (char*)_alloca(bufsz);
+#else
+   char buf[bufsz];
+#endif
 
    check_open(err);
    ERROR_CHECK(err);
 
-   snprintf(buf, sizeof(buf), fmt, table);
+   snprintf(buf, bufsz, fmt, table);
    prepare(buf, stmt, err);
    ERROR_CHECK(err);
 
