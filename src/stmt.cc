@@ -322,7 +322,7 @@ sqlite::statement::column(int idx, std::string &str, error *err)
       str.resize(0);
       str.append(cstr, len);
    }
-   catch (std::bad_alloc)
+   catch (const std::bad_alloc&)
    {
       ERROR_SET(err, nomem);
    }
