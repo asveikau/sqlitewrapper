@@ -43,6 +43,8 @@ else
 LDFLAGS += -lsqlite3
 endif
 
+GENERATED_HEADERS += sqlite3.h=SQLITE_STATIC_HEADER
+
 LIBSQLITEWRAPPER_SRC += \
    $(LIBSQLITEWRAPPER_ROOT)src/db.cc \
    $(LIBSQLITEWRAPPER_ROOT)src/stmt.cc \
