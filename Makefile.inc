@@ -37,6 +37,8 @@ endif
 
 $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite/sqlite3.h: $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite/sqlite3.c
 $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite/sqlite3ext.h: $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite/sqlite3.c
+
+SQLITE_STATIC_HEADER := $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite/sqlite3.h
 else
 LDFLAGS += -lsqlite3
 endif
