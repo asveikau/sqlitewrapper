@@ -177,7 +177,7 @@ public:
 
    template<typename T, typename... Args>
    void
-   bind_multi(error *err, int idx, T first, const Args& ... rest)
+   bind_multi(error *err, int idx, const T &first, const Args& ... rest)
    {
       bind_multi<T>(err, idx, first);
       if (ERROR_FAILED(err))
