@@ -22,13 +22,17 @@ CFLAGS += \
    -I$(LIBSQLITEWRAPPER_ROOT)third_party/sqlite
 
 ifdef WINDOWS
-$(LIBSQLITEWRAPPER_ROOT)third_party/sqlite/sqlite3.c:
-	(cd $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite; \
-	vcvarsall=`sh -c "/usr/bin/find 'C:\Program Files (x86)' -name vcvarsall.bat || true" | sort | tail -1 | tr / '\\' `; \
-	echo 'cmd /c ""'$$vcvarsall'" amd64_x86 && set CC=cl && set CFLAGS= && set MAKEFLAGS= && nmake -f Makefile.msc sqlite3.c"' > make_sqlite3_c.cmd; \
-	cmd //c make_sqlite3_c.cmd; \
-	rm -f make_sqlite3_c.cmd; \
-	cd ..)
+$(LIBSQLITEWRAPPER_ROOT)make_sqlite3_c.cmd:
+	(vcvarsall=`sh -c "/usr/bin/find 'C:\Program Files (x86)' -name vcvarsall.bat || true" | sort | tail -1 | tr / '\\' `; \
+	echo 'call "'$$vcvarsall'" amd64_x86'; \
+	echo 'set CC=cl'; \
+	echo 'set CFLAGS='; \
+	echo 'set MAKEFLAGS='; \
+	echo 'cd third_party/sqlite'; \
+	echo 'nmake -f Makefile.msc sqlite3.c') > "$@"
+
+$(LIBSQLITEWRAPPER_ROOT)third_party/sqlite/sqlite3.c: $(LIBSQLITEWRAPPER_ROOT)make_sqlite3_c.cmd
+	(cd $(LIBSQLITEWRAPPER_ROOT); cmd //c make_sqlite3_c.cmd)
 else
 $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite/sqlite3.c:
 	(cd $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite; ./configure; cd -)
