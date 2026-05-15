@@ -24,7 +24,7 @@ CFLAGS += \
 ifdef WINDOWS
 $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite/sqlite3.c:
 	(cd $(LIBSQLITEWRAPPER_ROOT)third_party/sqlite; \
-	vcvarsall=`sh -c "/usr/bin/find 'C:\Program Files (x86)' -name vcvarsall.bat || true" | head -1 | tr / '\\' `; \
+	vcvarsall=`sh -c "/usr/bin/find 'C:\Program Files (x86)' -name vcvarsall.bat || true" | sort | tail -1 | tr / '\\' `; \
 	echo 'cmd /c ""'$$vcvarsall'" amd64_x86 && set CC=cl && set CFLAGS= && set MAKEFLAGS= && nmake -f Makefile.msc sqlite3.c"' > make_sqlite3_c.cmd; \
 	cmd //c make_sqlite3_c.cmd; \
 	rm -f make_sqlite3_c.cmd; \
