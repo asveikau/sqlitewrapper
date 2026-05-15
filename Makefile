@@ -10,6 +10,8 @@ all-phony: $(LIBSQLITEWRAPPER)
 clean:
 	rm -f $(LIBCOMMON) $(LIBCOMMON_OBJS)
 	rm -f $(LIBSQLITEWRAPPER) $(LIBSQLITEWRAPPER_OBJS)
+	rm -f make_sqlite3_c.cmd
+	rm -f third_party/sqlite/sqlite3.c
 
 export
 depend:
